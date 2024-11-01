@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import "./checkout.styles.scss";
 
 import CheckoutItem from "../../components/checkout-item/checkout-item.component";
+import StripCheckoutButton from "../../components/stripe-button/stripe-button.component";
 
 import { selectCartItems } from "../../redux/cart/cart.selectors";
 import { selectCartTotal } from "../../redux/cart/cart.selectors";
@@ -37,6 +38,11 @@ const Checkout = () => {
       <div className="total">
         <span>TOTAL: {total}</span>
       </div>
+      <div className="test-warning">
+        *Please use the following test credit card for payments:* <br />
+        Card Number : 4242 4242 4242 4242 - Expiry : 06/25 - CVV : 123
+      </div>
+      <StripCheckoutButton price={total} />
     </div>
   );
 };
