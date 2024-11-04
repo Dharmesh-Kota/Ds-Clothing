@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, setDoc, collection, writeBatch } from 'firebase/firestore';
 
 const firebaseConfig = {
     apiKey: "AIzaSyBumcaIm0QqsYOmVhjnWSu2J5oI3du8U8U",
@@ -11,6 +11,19 @@ const firebaseConfig = {
     appId: "1:108274685997:web:ffd624509f351bbec8c0a4",
     measurementId: "G-6FWCTQZ5C4"
 };
+
+// Creating new collection in Firestore
+export const addCollectionAndDocuments = async (collectionKey, documentsToAdd) => {
+    const collectionRef = collection(firestore, collectionKey);
+    const batch = writeBatch(firestore);
+
+    documentsToAdd.forEach(obj => {
+        const newDocRef = doc(collectionRef);
+        batch.set(newDocRef, obj);
+    });
+    
+    return await batch.commit();
+}
 
 // Create user profile document in Firestore
 export const createUserProfileDocument = async (userAuth, additionalData) => {
@@ -37,6 +50,25 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
         }
     }
     return userRef;
+}
+
+// Converting the collections array obtained from Firestore into Maps so that it can be  
+// pushed into our redux store
+export const convertCollectionsSnapshotToMap = (collections) => {
+    const transformedCollections = collections.docs.map(doc => {
+        const { title, items } = doc.data();
+        return {
+            routeName: encodeURI(title.toLowerCase()),
+            id: doc.id,
+            title,
+            items
+        }
+    });
+    
+    return transformedCollections.reduce((accumulator, collection) => {
+        accumulator[collection.title.toLowerCase()] = collection;
+        return accumulator;
+    }, {});
 }
 
 // Initialize Firebase app
