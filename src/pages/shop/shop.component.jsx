@@ -1,37 +1,33 @@
 import React, { useEffect } from "react";
-import { Routes, Route } from 'react-router-dom'
-import { collection } from "firebase/firestore";
+import { Routes, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-import { firestore, convertCollectionsSnapshotToMap } from "../../firebase/firebase.utils";
-import { onSnapshot } from "firebase/firestore";
-import { updateCollections } from '../../redux/shop/shop.reducer';
-
-import CollectionsOverview from "../../components/collections-overview/collections-overview.component";
-import CollectionPage from "../collection/collection.component";
+import CollectionsOverviewContainer from "../../components/collections-overview/collections-overview.container";
+import CollectionPageContainer from "../collection/collection.container";
+import { fetchCollections } from "../../redux/shop/shop.reducer"
 
 const ShopPage = () => {
 
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-    useEffect(() => {
+  useEffect(() => {
+    dispatch(fetchCollections());
+  }, [dispatch]);
 
-        const collectionRef = collection(firestore, 'collections');
-        const unsubscribeFromSnapshot = onSnapshot(collectionRef, async (snapshot) => {
-            const collectionsMap = convertCollectionsSnapshotToMap(snapshot);
-            dispatch(updateCollections(collectionsMap));
-        });
-
-    }, [dispatch]);
-
-    return (
-        <div>
-            <Routes>
-                <Route path={"/"} element={<CollectionsOverview />} />
-                <Route path={":collectionId"} element={<CollectionPage />} />
-            </Routes>
-        </div>
-    )
+  return (
+    <div>
+        <Routes>
+          <Route
+            path="/"
+            element={<CollectionsOverviewContainer />}
+          />
+          <Route
+            path=":collectionId"
+            element={<CollectionPageContainer />}
+          />
+        </Routes>
+    </div>
+  );
 };
 
 export default ShopPage;
