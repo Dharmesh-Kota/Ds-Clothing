@@ -30,7 +30,7 @@ app.listen(port, error => {
     console.log('Server running on port: ', port);
 });
 
-app.post('/payment', (req, res) => {
+app.post('/api/payment', (req, res) => {
     const body = {
         source: req.body.token.id,
         amount: req.body.amount,
