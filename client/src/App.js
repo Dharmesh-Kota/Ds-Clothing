@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, lazy, Suspense } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -6,16 +6,21 @@ import { setCurrentUser } from "./redux/user/user.reducer";
 import { selectCurrentUser } from "./redux/user/user.selector";
 
 import "./App.css";
-import HomePage from "./pages/homepage/homepage.component";
-import ShopPage from "./pages/shop/shop.component";
 import Header from "./components/header/header.component";
-import SignInAndSignUpPage from "./pages/sign-in-and-sign-up/sign-in-and-sign-up.component";
-import Checkout from "./pages/checkout/checkout.component";
+import Spinner from "./components/spinner/spinner.component";
+import ErrorBoundary from "./components/error-boundary/error-boundary.component";
 
 import { auth } from "./firebase/firebase.utils";
 import { onSnapshot } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { createUserProfileDocument } from "./firebase/firebase.utils";
+
+const HomePage = lazy(() => import("./pages/homepage/homepage.component"));
+const ShopPage = lazy(() => import("./pages/shop/shop.component"));
+const SignInAndSignUpPage = lazy(() =>
+  import("./pages/sign-in-and-sign-up/sign-in-and-sign-up.component")
+);
+const Checkout = lazy(() => import("./pages/checkout/checkout.component"));
 
 const App = () => {
   const dispatch = useDispatch();
@@ -54,15 +59,21 @@ const App = () => {
   return (
     <div>
       <Header />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/shop/*" element={<ShopPage />} />
-        <Route
-          path="/sign-in"
-          element={currentUser ? <Navigate to="/" /> : <SignInAndSignUpPage />}
-        />
-        <Route path="/checkout" element={<Checkout />} />
-      </Routes>
+      <ErrorBoundary>
+        <Suspense fallback={<Spinner />}>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/shop/*" element={<ShopPage />} />
+            <Route
+              path="/sign-in"
+              element={
+                currentUser ? <Navigate to="/" /> : <SignInAndSignUpPage />
+              }
+            />
+            <Route path="/checkout" element={<Checkout />} />
+          </Routes>
+        </Suspense>
+      </ErrorBoundary>
     </div>
   );
 };
