@@ -8,6 +8,7 @@ import "./index.css";
 import App from "./App";
 
 import {store, persistor} from './redux/store'
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -21,3 +22,6 @@ root.render(
     </React.StrictMode>
   </Provider>
 );
+
+// Enable the service worker
+serviceWorkerRegistration.register();
