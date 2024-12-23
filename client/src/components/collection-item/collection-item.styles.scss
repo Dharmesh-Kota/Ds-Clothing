@@ -1,10 +1,26 @@
+$mobile-width: 480px;
+$tablet-width: 768px;
+$desktop-width: 1024px;
+
 .collection-item {
-  width: 22vw;
   display: flex;
   flex-direction: column;
-  height: 350px;
   align-items: center;
   position: relative;
+  width: 100%; /* Adjust width to align with grid */
+  height: auto; /* Prevent overflow */
+
+  @media (max-width: $tablet-width) {
+    height: 280px;
+  }
+
+  @media (min-width: $tablet-width) and (max-width: $desktop-width) {
+    height: 320px;
+  }
+
+  @media (min-width: $desktop-width) {
+    height: 350px;
+  }
 
   .image {
     width: 100%;
@@ -19,7 +35,18 @@
     height: 5%;
     display: flex;
     justify-content: space-between;
-    font-size: 18px;
+
+    @media (max-width: $tablet-width) {
+      font-size: 14px;
+    }
+
+    @media (min-width: $tablet-width) and (max-width: $desktop-width) {
+      font-size: 16px;
+    }
+
+    @media (min-width: $desktop-width) {
+      font-size: 18px;
+    }
 
     .name {
       width: 90%;
@@ -35,14 +62,33 @@
     width: 80%;
     opacity: 0.7;
     position: absolute;
-    top: 255px;
     display: none;
+
+    @media (max-width: $tablet-width) {
+      top: 205px;
+    }
+
+    @media (min-width: $tablet-width) and (max-width: $desktop-width) {
+      top: 235px;
+    }
+
+    @media (min-width: $desktop-width) {
+      top: 255px;
+    }
+
+    @media (max-width: $tablet-width) {
+      display: flex;
+      opacity: 0.9;
+      min-width: unset;
+      padding: 0 10px;
+    }
   }
 
   &:hover {
     .image {
       opacity: 0.8;
     }
+
     .custom-button {
       opacity: 0.85;
       display: flex;

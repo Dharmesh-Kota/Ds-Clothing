@@ -1,4 +1,6 @@
-/* ErrorImageOverlay */
+$error-mobile-width: 480px;
+$error-tablet-width: 768px;
+
 .error-image-overlay {
   height: 60vh;
   width: 100%;
@@ -6,19 +8,39 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  @media (max-width: $error-mobile-width) {
+    height: 50vh;
+  }
 }
 
-/* ErrorImageContainer */
 .error-image-container {
   display: inline-block;
   background-size: cover;
   background-position: center;
   width: 40vh;
   height: 40vh;
+
+  @media (max-width: $error-mobile-width) {
+    width: 30vh;
+    height: 30vh;
+  }
+
+  @media (max-width: $error-tablet-width) and (min-width: $error-mobile-width) {
+    width: 35vh;
+    height: 35vh;
+  }
 }
 
-/* ErrorImageText */
 .error-image-text {
   font-size: 28px;
   color: #2f8e89;
+
+  @media (max-width: $error-mobile-width) {
+    font-size: 22px;
+  }
+
+  @media (max-width: $error-tablet-width) and (min-width: $error-mobile-width) {
+    font-size: 25px;
+  }
 }

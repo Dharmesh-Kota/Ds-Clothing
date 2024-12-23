@@ -1,21 +1,63 @@
+$mobile-width: 480px;
+$tablet-width: 768px;
+$desktop-width: 1024px;
+
 .cart-icon {
-    width: 45px;
-    height: 45px;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-  
-    .shopping-icon {
-      width: 24px;
-      height: 24px;
-    }
-  
-    .item-count {
-      position: absolute;
-      font-size: 10px;
-      font-weight: bold;
-      bottom: 12px;
-    }
-  }  
+ cursor: pointer;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ position: relative;
+
+ @media (max-width: $tablet-width) {
+   width: 35px;
+   height: 35px;
+ }
+
+ @media (min-width: $tablet-width) and (max-width: $desktop-width) {
+   width: 40px; 
+   height: 40px;
+ }
+
+ @media (min-width: $desktop-width) {
+   width: 45px;
+   height: 45px;
+ }
+
+ .shopping-icon {
+   @media (max-width: $tablet-width) {
+     width: 20px;
+     height: 20px;
+   }
+
+   @media (min-width: $tablet-width) and (max-width: $desktop-width) {
+     width: 22px;
+     height: 22px;
+   }
+
+   @media (min-width: $desktop-width) {
+     width: 24px;
+     height: 24px;
+   }
+ }
+
+ .item-count {
+   position: absolute;
+   font-weight: bold;
+
+   @media (max-width: $tablet-width) {
+     font-size: 9px;
+     bottom: 8px;
+   }
+
+   @media (min-width: $tablet-width) and (max-width: $desktop-width) {
+     font-size: 9.5px;
+     bottom: 10px;
+   }
+
+   @media (min-width: $desktop-width) {
+     font-size: 10px;
+     bottom: 12px;
+   }
+ }
+}

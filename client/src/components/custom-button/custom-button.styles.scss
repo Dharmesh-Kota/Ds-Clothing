@@ -1,11 +1,13 @@
+$mobile-width: 480px;
+$tablet-width: 768px;
+
 .custom-button {
-  min-width: 165px;
+  // min-width: 165px;
   width: auto;
   height: 50px;
   letter-spacing: 0.5px;
   line-height: 50px;
-  padding: 0 35px 0 35px;
-  font-size: 15px;
+  padding: 0 35px;
   background-color: black;
   color: white;
   text-transform: uppercase;
@@ -15,6 +17,8 @@
   cursor: pointer;
   display: flex;
   justify-content: center;
+  align-items: center;
+  text-align: center;
 
   &:hover {
     background-color: white;
@@ -25,6 +29,7 @@
   &.google-sign-in {
     background-color: #4285f4;
     color: white;
+    white-space: nowrap;
 
     &:hover {
       background-color: #357ae8;
@@ -41,6 +46,38 @@
       background-color: black;
       color: white;
       border: none;
+    }
+  }
+
+  @media (max-width: $tablet-width) {
+    // min-width: 150px;
+    height: 48px;
+    line-height: 48px;
+    padding: 0 30px;
+    font-size: 14px;
+
+    &.google-sign-in {
+      font-size: 13px;
+    }
+
+    &.inverted {
+      font-size: 14px;
+    }
+  }
+
+  @media (max-width: $mobile-width) {
+    // min-width: 140px;
+    height: 45px;
+    line-height: 45px;
+    padding: 0 20px;
+    font-size: 12px;
+
+    &.google-sign-in {
+      font-size: 12px;
+    }
+
+    &.inverted {
+      font-size: 12px;
     }
   }
 }

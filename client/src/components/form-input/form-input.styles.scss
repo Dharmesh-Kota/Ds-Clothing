@@ -7,9 +7,16 @@ $main-color: black;
   color: $main-color;
 }
 
+$mobile-width: 480px;
+$tablet-width: 768px;
+
 .group {
   position: relative;
   margin: 45px 0;
+
+  @media (max-width: $mobile-width) {
+    margin: 30px 0;
+  }
 
   .form-input {
     background: none;
@@ -31,10 +38,20 @@ $main-color: black;
     &:focus ~ .form-input-label {
       @include shrinkLabel();
     }
+
+    @media (max-width: $mobile-width) {
+      font-size: 16px;
+      padding: 8px 8px 8px 4px;
+      margin: 20px 0;
+    }
   }
 
   input[type='password'] {
     letter-spacing: 0.3em;
+
+    @media (max-width: $mobile-width) {
+      letter-spacing: 0.2em;
+    }
   }
 
   .form-input-label {
@@ -49,6 +66,16 @@ $main-color: black;
 
     &.shrink {
       @include shrinkLabel();
+    }
+
+    @media (max-width: $mobile-width) {
+      font-size: 14px;
+      top: 8px;
+
+      &.shrink {
+        top: -12px;
+        font-size: 11px;
+      }
     }
   }
 }
