@@ -7,18 +7,21 @@ $desktop-width: 1024px;
   flex-direction: column;
   align-items: center;
   position: relative;
-  width: 100%; /* Adjust width to align with grid */
-  height: auto; /* Prevent overflow */
+  width: 100%;
+  height: auto;
 
   @media (max-width: $tablet-width) {
+    width: 45vw;
     height: 280px;
   }
 
   @media (min-width: $tablet-width) and (max-width: $desktop-width) {
+    width: 30vw;
     height: 320px;
   }
 
   @media (min-width: $desktop-width) {
+    width: 22vw;
     height: 350px;
   }
 
