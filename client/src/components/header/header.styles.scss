@@ -8,7 +8,7 @@
   .logo-container {
     height: 100%;
     width: 70px;
-    padding: 25px;
+    padding: 5px;
   }
 
   .options {
@@ -30,7 +30,7 @@
 
     .logo-container {
       width: 60px;
-      padding: 20px;
+      padding: 5px;
     }
 
     .options {
@@ -44,11 +44,11 @@
 
   @media screen and (max-width: 480px) {
     height: 50px;
-    margin-bottom: 15px;
+    margin-bottom: 1px;
 
     .logo-container {
       width: 50px;
-      padding: 15px;
+      padding: 5px;
     }
 
     .options {

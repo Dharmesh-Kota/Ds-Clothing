@@ -1,50 +1,70 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const cartSlice = createSlice({
-    name: 'cart',
-    initialState: {
-        hidden: true,
-        cartItems: []
+  name: "cart",
+  initialState: {
+    hidden: true,
+    cartItems: [],
+  },
+  reducers: {
+    toggleCartHidden: (state, action) => {
+      state.hidden = !state.hidden;
     },
-    reducers: {
-        toggleCartHidden: (state, action) => {
-            state.hidden = !state.hidden;
-        },
-        addItem: (state, action) => {
-            const incomingItem = action.payload;
-            const itemExists = state.cartItems.find(item => item.id === incomingItem.id);
-
-            if (itemExists) {
-                itemExists.quantity += 1;
-            } else {
-                state.cartItems.push({...incomingItem, quantity: 1});
-            }
-        },
-        clearItem: (state, action) => {
-            state.cartItems = state.cartItems.filter(
-                (cartItem) => cartItem.id !== action.payload.id
-            );
-        },
-        removeItem: (state, action) => {
-            const itemToRemove = state.cartItems.find(
-                (cartItem) => cartItem.id === action.payload.id
-            );
-        
-            if (itemToRemove) {
-                if (itemToRemove.quantity === 1) {
-                    state.cartItems = state.cartItems.filter(
-                        (cartItem) => cartItem.id !== action.payload.id
-                    );
-                } else {
-                    itemToRemove.quantity -= 1;
-                }
-            }
+    addItem: (state, action) => {
+      const incomingItem = action.payload;
+      const existingItem = state.cartItems[`${"item" + incomingItem.id}`];
+  
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        state.cartItems[`${"item" + incomingItem.id}`] = { ...incomingItem, quantity: 1 };
+      }
+    },
+    clearItem: (state, action) => {
+      const itemId = "item" + action.payload.id;
+      if (state.cartItems[itemId]) {
+        delete state.cartItems[itemId];
+      }
+    },
+    removeItem: (state, action) => {
+      const itemId = "item" + action.payload.id;
+      const existingItem = state.cartItems[itemId];
+  
+      if (existingItem) {
+        if (existingItem.quantity === 1) {
+          delete state.cartItems[itemId];
+        } else {
+          existingItem.quantity -= 1;
         }
-    }
+      }
+    },
+    updateCart: (state, action) => {
+      const firebaseCart = action.payload || {};
+      const mergedCart = { ...state.cartItems };
+  
+      Object.keys(firebaseCart).forEach((id) => {
+        if (!mergedCart[id]) {
+          mergedCart[id] = { ...firebaseCart[id] };
+        }
+      });
+  
+      state.cartItems = mergedCart;
+    },
+    emptyCart: (state, action) => {
+      state.cartItems = {};
+    },
+  }  
 });
 
 const { actions, reducer } = cartSlice;
 
-export const { toggleCartHidden, addItem, clearItem, removeItem } = actions;
+export const {
+  toggleCartHidden,
+  addItem,
+  clearItem,
+  removeItem,
+  updateCart,
+  emptyCart,
+} = actions;
 
 export default reducer;

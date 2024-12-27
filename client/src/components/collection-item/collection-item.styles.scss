@@ -79,7 +79,7 @@ $desktop-width: 1024px;
       top: 255px;
     }
 
-    @media (max-width: $tablet-width) {
+    @media (max-width: 1240px) {
       display: flex;
       opacity: 0.9;
       min-width: unset;

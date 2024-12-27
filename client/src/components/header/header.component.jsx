@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { ReactComponent as Logo } from "../../assets/crown.svg";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import "./header.styles.scss";
 
@@ -9,6 +9,7 @@ import CartIcon from "../cart-icon/cart-icon.component";
 import CartDropdown from "../cart-dropdown/cart-dropdown.component";
 
 import { auth } from "../../firebase/firebase.utils";
+import { emptyCart } from "../../redux/cart/cart.reducer";
 import { selectCurrentUser } from "../../redux/user/user.selector";
 import { selectCartHidden } from "../../redux/cart/cart.selectors";
 
@@ -16,6 +17,17 @@ const Header = () => {
   
   const currentUser = useSelector(selectCurrentUser);
   const isCartHidden = useSelector(selectCartHidden);
+
+  const dispatch = useDispatch();
+
+  const handleSignOut = async () => {
+    try {
+      dispatch(emptyCart());
+      await auth.signOut();
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
 
   return (
     <div className="header">
@@ -30,7 +42,7 @@ const Header = () => {
           CONTACT
         </Link>
         {currentUser ? (
-          <div className="option" onClick={() => auth.signOut()}>
+          <div className="option" onClick={() => handleSignOut()}>
             SIGN OUT
           </div>
         ) : (

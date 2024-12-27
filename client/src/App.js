@@ -3,14 +3,16 @@ import { Route, Routes, Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import { setCurrentUser } from "./redux/user/user.reducer";
+import { updateCart } from "./redux/cart/cart.reducer";
 import { selectCurrentUser } from "./redux/user/user.selector";
+import { selectCartItemsObject } from "./redux/cart/cart.selectors"
 
 import "./App.css";
 import Header from "./components/header/header.component";
 import Spinner from "./components/spinner/spinner.component";
 import ErrorBoundary from "./components/error-boundary/error-boundary.component";
 
-import { auth } from "./firebase/firebase.utils";
+import { auth, updateCartInFirestore, mergeCarts } from "./firebase/firebase.utils";
 import { onSnapshot } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { createUserProfileDocument } from "./firebase/firebase.utils";
@@ -25,15 +27,16 @@ const Checkout = lazy(() => import("./pages/checkout/checkout.component"));
 const App = () => {
   const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);
+  const cartItems = useSelector(selectCartItemsObject);
 
   useEffect(() => {
     const unsubscribeFromAuth = onAuthStateChanged(auth, async (userAuth) => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
-
+  
         onSnapshot(userRef, (snapshot) => {
           const userData = snapshot.data();
-
+  
           dispatch(
             setCurrentUser({
               id: snapshot.id,
@@ -43,19 +46,23 @@ const App = () => {
                 : null,
             })
           );
+
+          const mergedCart = mergeCarts(userData.cartItems, cartItems);
+          dispatch(updateCart(mergedCart));
+          updateCartInFirestore(snapshot.id, mergedCart);
         });
       } else {
         dispatch(setCurrentUser(null));
       }
     });
-
+  
     return () => {
       if (unsubscribeFromAuth) {
         unsubscribeFromAuth();
       }
     };
   }, [dispatch]);
-
+  
   return (
     <div>
       <Header />
