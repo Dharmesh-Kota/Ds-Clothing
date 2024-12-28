@@ -22,8 +22,8 @@ const Header = () => {
 
   const handleSignOut = async () => {
     try {
-      dispatch(emptyCart());
       await auth.signOut();
+      dispatch(emptyCart());
     } catch (error) {
       console.error("Error signing out:", error);
     }

@@ -5,14 +5,17 @@ import { useSelector, useDispatch } from "react-redux";
 import { setCurrentUser } from "./redux/user/user.reducer";
 import { updateCart } from "./redux/cart/cart.reducer";
 import { selectCurrentUser } from "./redux/user/user.selector";
-import { selectCartItemsObject } from "./redux/cart/cart.selectors"
+import { selectCartItemsObject } from "./redux/cart/cart.selectors";
 
 import "./App.css";
 import Header from "./components/header/header.component";
 import Spinner from "./components/spinner/spinner.component";
 import ErrorBoundary from "./components/error-boundary/error-boundary.component";
 
-import { auth, updateCartInFirestore, mergeCarts } from "./firebase/firebase.utils";
+import {
+  auth,
+  updateCartInFirestore,
+} from "./firebase/firebase.utils";
 import { onSnapshot } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { createUserProfileDocument } from "./firebase/firebase.utils";
@@ -33,10 +36,10 @@ const App = () => {
     const unsubscribeFromAuth = onAuthStateChanged(auth, async (userAuth) => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
-  
+
         onSnapshot(userRef, (snapshot) => {
           const userData = snapshot.data();
-  
+
           dispatch(
             setCurrentUser({
               id: snapshot.id,
@@ -47,22 +50,25 @@ const App = () => {
             })
           );
 
-          const mergedCart = mergeCarts(userData.cartItems, cartItems);
-          dispatch(updateCart(mergedCart));
-          updateCartInFirestore(snapshot.id, mergedCart);
+          dispatch(updateCart(userData.cartItems));
         });
+
       } else {
         dispatch(setCurrentUser(null));
       }
     });
-  
+
     return () => {
-      if (unsubscribeFromAuth) {
-        unsubscribeFromAuth();
-      }
+      unsubscribeFromAuth();
     };
   }, [dispatch]);
-  
+
+  useEffect(() => {
+    if (currentUser) {
+      updateCartInFirestore(currentUser.id, cartItems);
+    }
+  }, [cartItems, currentUser]);
+
   return (
     <div>
       <Header />

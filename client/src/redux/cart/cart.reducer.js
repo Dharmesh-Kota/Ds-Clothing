@@ -4,7 +4,7 @@ const cartSlice = createSlice({
   name: "cart",
   initialState: {
     hidden: true,
-    cartItems: [],
+    cartItems: {},
   },
   reducers: {
     toggleCartHidden: (state, action) => {
@@ -13,11 +13,14 @@ const cartSlice = createSlice({
     addItem: (state, action) => {
       const incomingItem = action.payload;
       const existingItem = state.cartItems[`${"item" + incomingItem.id}`];
-  
+
       if (existingItem) {
         existingItem.quantity += 1;
       } else {
-        state.cartItems[`${"item" + incomingItem.id}`] = { ...incomingItem, quantity: 1 };
+        state.cartItems[`${"item" + incomingItem.id}`] = {
+          ...incomingItem,
+          quantity: 1,
+        };
       }
     },
     clearItem: (state, action) => {
@@ -29,7 +32,7 @@ const cartSlice = createSlice({
     removeItem: (state, action) => {
       const itemId = "item" + action.payload.id;
       const existingItem = state.cartItems[itemId];
-  
+
       if (existingItem) {
         if (existingItem.quantity === 1) {
           delete state.cartItems[itemId];
@@ -39,21 +42,21 @@ const cartSlice = createSlice({
       }
     },
     updateCart: (state, action) => {
-      const firebaseCart = action.payload || {};
       const mergedCart = { ...state.cartItems };
-  
+      const firebaseCart = action.payload || {};
+
       Object.keys(firebaseCart).forEach((id) => {
         if (!mergedCart[id]) {
           mergedCart[id] = { ...firebaseCart[id] };
         }
       });
-  
+
       state.cartItems = mergedCart;
     },
     emptyCart: (state, action) => {
       state.cartItems = {};
     },
-  }  
+  },
 });
 
 const { actions, reducer } = cartSlice;

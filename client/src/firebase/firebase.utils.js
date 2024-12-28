@@ -142,25 +142,11 @@ export const removeItemFromFirestore = async (userId, itemId) => {
 export const updateCartInFirestore = async (userId, cartItems) => {
   try {
     const userRef = doc(firestore, "users", userId);
-
     await updateDoc(userRef, { cartItems });
   } catch (error) {
     console.error("Error updating user's cartItems in Firestore:", error);
   }
 }
-
-export const mergeCarts = (firebaseCart, localCart) => {
-  const mergedCart = { ...localCart };
-  if (!firebaseCart) firebaseCart = {};
-
-  Object.keys(firebaseCart).forEach((id) => {
-    if (!mergedCart[id]) {
-      mergedCart[id] = { ...firebaseCart[id] };
-    }
-  });
-
-  return mergedCart;
-};
 
 // Initialize Firebase app
 const app = initializeApp(firebaseConfig);
