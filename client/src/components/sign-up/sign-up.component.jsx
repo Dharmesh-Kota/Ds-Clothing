@@ -27,17 +27,30 @@ class SignUp extends Component {
         this.setState({ [name]: value });
     }
 
+    validateForm = () => {
+        const { displayName, email, password, confirmPassword } = this.state;
+        return displayName.trim() && 
+               email.trim() && 
+               password.trim() && 
+               confirmPassword.trim();
+    }
+
     handleSubmit = async (event) => {
         event.preventDefault();
 
         const { displayName, email, password, confirmPassword } = this.state;
+        
+        // Check if all fields are filled
+        if (!this.validateForm()) {
+            return;
+        }
+
         if (password !== confirmPassword) {
             alert('Passwords do not match');
             return;
         }
 
         try {
-            
             const { user } = await createUserWithEmailAndPassword(auth, email, password);
 
             await createUserProfileDocument(user, { displayName });
@@ -63,42 +76,46 @@ class SignUp extends Component {
                     <span>Sign up with your Email and Password</span>
                 </div>
 
-                <form className="sign-up-form" onSubmit={this.handleSubmit}>
-                <FormInput 
-                    handleChange={this.handleChange}
-                    label="Name"
-                    type="text"
-                    name="displayName" 
-                    value={displayName} 
-                    required
-                />
-                <FormInput 
-                    handleChange={this.handleChange}
-                    label="Email"
-                    type="email"
-                    name="email" 
-                    value={email} 
-                    required
-                />
-                <FormInput 
-                    handleChange={this.handleChange}
-                    label="Password"
-                    type="password" 
-                    name="password" 
-                    value={password}
-                    required
-                />
-                <FormInput 
-                    handleChange={this.handleChange}
-                    label="Confirm Password"
-                    type="password" 
-                    name="confirmPassword" 
-                    value={confirmPassword}
-                    required
-                />
-                <div className="buttons">
-                    <CustomButton type="submit"> SIGN UP </CustomButton>
-                </div>
+                <form className="sign-up-form" onSubmit={this.handleSubmit} role="form">
+                    <FormInput 
+                        handleChange={this.handleChange}
+                        id="displayName"
+                        label="Name"
+                        type="text"
+                        name="displayName" 
+                        value={displayName} 
+                        required
+                    />
+                    <FormInput 
+                        handleChange={this.handleChange}    
+                        id="email"
+                        label="Email"
+                        type="email"
+                        name="email" 
+                        value={email} 
+                        required
+                    />
+                    <FormInput 
+                        handleChange={this.handleChange}
+                        id="password"
+                        label="Password"
+                        type="password" 
+                        name="password" 
+                        value={password}
+                        required
+                    />
+                    <FormInput 
+                        handleChange={this.handleChange}
+                        id="confirmPassword"
+                        label="Confirm Password"
+                        type="password" 
+                        name="confirmPassword" 
+                        value={confirmPassword}
+                        required
+                    />
+                    <div className="buttons">
+                        <CustomButton type="submit"> SIGN UP </CustomButton>
+                    </div>
                 </form>
             </div>
         );

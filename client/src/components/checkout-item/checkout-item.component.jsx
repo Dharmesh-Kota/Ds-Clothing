@@ -38,20 +38,20 @@ const CheckoutItem = ({ item }) => {
   return (
     <div className="checkout-item">
       <div className="image-container">
-        <img alt="item" src={imageUrl} />
+        <img alt={name} src={imageUrl} />
       </div>
       <span className="name">{name}</span>
       <span className="quantity">
-        <div className="arrow" onClick={() => handleRemoveItem(item)}>
+        <div className="arrow" data-testid="remove-item" onClick={() => handleRemoveItem(item)}>
           &#10094;
         </div>
         <span className="value">{quantity}</span>
-        <div className="arrow" onClick={() => handleAddItem(item)}>
+        <div className="arrow" data-testid="add-item" onClick={() => handleAddItem(item)}>
           &#10095;
         </div>
       </span>
       <span className="price">{price}</span>
-      <span className="remove-button" onClick={() => handleClearItem(item)}>
+      <span className="remove-button" data-testid="clear-item" onClick={() => handleClearItem(item)}>
         &#10005;
       </span>
     </div>

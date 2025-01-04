@@ -27,6 +27,7 @@ class ErrorBoundary extends React.Component {
         <div className="error-image-overlay">
           <div
             className="error-image-container"
+            data-testid="error-image"
             style={{ backgroundImage: `url(${ErrorImage})` }}
           ></div>
           <h2 className="error-image-text">Something went wrong!</h2>

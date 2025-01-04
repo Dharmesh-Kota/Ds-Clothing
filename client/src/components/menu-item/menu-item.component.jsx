@@ -7,9 +7,10 @@ const MenuItem = ({ title, imageUrl, size, linkUrl }) => {
     const location = useLocation();
 
     return (
-        <div className={`menu-item${size === "large" ? " large" : ""}`}>
+        <div className={`menu-item${size === "large" ? " large" : ""}`} data-testid="menu-item">
             <div 
                 className="background-image"
+                data-testid="background-image"
                 style={
                     {backgroundImage: `url(${imageUrl})`}
                 }

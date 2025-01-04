@@ -13,12 +13,12 @@ const CollectionPage = () => {
   const collection = useSelector((state) =>
     selectCollection(collectionId)(state)
   );
-  const { title, items } = collection;
+  const { title, items } = collection ? collection : { title: null, items: [] };
 
   return (
     <div className="collection-page">
       <h2 className="title">{title}</h2>
-      <div className="items">
+      <div className="items" >
         {items.map((item) => (
           <CollectionItem key={item.id} item={item} />
         ))}

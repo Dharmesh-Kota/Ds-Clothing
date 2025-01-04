@@ -25,6 +25,7 @@ const CollectionItem = ({ item }) => {
     <div className="collection-item">
       <div
         className="image"
+        data-testid="background-image"
         style={{
           backgroundImage: `url(${item.imageUrl})`,
         }}
@@ -33,7 +34,7 @@ const CollectionItem = ({ item }) => {
         <span className="name">{item.name}</span>
         <span className="price">{item.price}</span>
       </div>
-      <CustomButton onClick={() => handleAddItem(item)} inverted>
+      <CustomButton data-testid="add-item" onClick={() => handleAddItem(item)} inverted>
         {" "}
         Add to Cart{" "}
       </CustomButton>

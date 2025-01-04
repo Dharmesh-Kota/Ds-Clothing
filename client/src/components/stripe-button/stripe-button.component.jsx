@@ -1,9 +1,9 @@
 import React from "react";
 import StripeCheckout from "react-stripe-checkout";
-import axios from "axios"
-import { useSelector } from 'react-redux';
+import axios from "axios";
+import { useSelector } from "react-redux";
 
-import "./stripe-button.styles.scss"
+import "./stripe-button.styles.scss";
 
 import { selectCurrentUser } from "../../redux/user/user.selector";
 
@@ -16,27 +16,26 @@ const StripCheckoutButton = ({ price }) => {
 
   const onToken = (token) => {
     axios({
-      url: 'api/payment',
-      method: 'post',
+      url: "api/payment",
+      method: "post",
       data: {
         amount: priceForStripe,
-        token: token
-      }
-    }).then(response => {
-      alert('Payment Successful!');
-    }).catch(error => {
-      console.log('Payment error: ', JSON.parse(error));
+        token: token,
+      },
+    })
+      .then((response) => {
+        alert("Payment Successful!");
+      })
+      .catch((error) => {
+        console.log("Payment error: ", error.response?.data || error.message);
 
-      alert('There was an issue with your payment. Please make sure you use the provided credentials!');
-    });
+        alert(
+          "There was an issue with your payment. Please make sure you use the provided credentials!"
+        );
+      });
   };
 
-  const handleClosed = () => {
-    console.log("Hii");
-  }
-
-  return (
-    isUserLoggedIn ? (
+  return isUserLoggedIn ? (
     <StripeCheckout
       name="Ds Clothing Ltd."
       label="Pay Now"
@@ -47,10 +46,9 @@ const StripCheckoutButton = ({ price }) => {
       panelLabel="Pay Now"
       token={onToken}
       stripeKey={publishableKey}
-      closed = {handleClosed}
-    />) : (
-      <div className="payment-prompt">Please log in to proceed with payment!</div>
-    )
+    />
+  ) : (
+    <div className="payment-prompt">Please log in to proceed with payment!</div>
   );
 };
 
